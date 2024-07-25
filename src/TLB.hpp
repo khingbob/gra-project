@@ -34,8 +34,6 @@ SC_MODULE(TLB)
     sc_vector<sc_vector<sc_signal<bool>>> tlb_lines_output;
     sc_bv<65> tlb_lines_input_temp;
 
-    unsigned clock_ticks = 0;
-
     LOOKUP_TABLE lt; // lookup_table
     sc_signal<sc_bv<32>> ltOutput;
 
