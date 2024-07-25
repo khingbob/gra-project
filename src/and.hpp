@@ -17,8 +17,8 @@ SC_MODULE(AND_GATE)
     }
     void to_do()
     {
-        while (true)
-        {
+        while(true) {
+
             output = (input1.read() && input2.read());
             wait();
         }

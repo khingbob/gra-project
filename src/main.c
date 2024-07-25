@@ -5,6 +5,7 @@
 #include <string.h> // for strcmp, strrchr
 #include <limits.h> // for UINT32_MAX
 #include <getopt.h> // for getopt
+#include <math.h>   // for log2
 // Request is the format of one input to the simulation
 struct Request
 {
@@ -350,12 +351,12 @@ int main(int argc, char *argv[])
 
     // here the default values
 
-    int cycles = 10000;
+    int cycles = 1000000000;
     unsigned tlbSize = 8;
-    unsigned tlbsLatency = 2;
+    unsigned tlbsLatency = 10;
     unsigned blocksize = 16;
     unsigned v2bBlockOffset = 5;
-    unsigned memoryLatency = 50;
+    unsigned memoryLatency = 30;
     size_t numRequests = 0;
     const char *tracefile = NULL; // by default no tracefile
     const char *input_file_name;

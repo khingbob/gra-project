@@ -10,16 +10,14 @@ SC_MODULE(NOT_GATE)
 
     SC_CTOR(NOT_GATE)
     {
-        SC_THREAD(to_do);
+        SC_METHOD(to_do);
         sensitive << input;
     }
     void to_do()
     {
-        while (true)
-        {
-            output = (!input.read());
-            wait();
-        }
+        std::cout << "NOT GATE ACTIVATED IN" << sc_time_stamp() <<"WITH INPUT " << input.read() << std::endl;
+        output = (!input.read());
+
     }
 };
 #endif

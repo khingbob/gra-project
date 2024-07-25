@@ -121,9 +121,9 @@ SC_MODULE(TLB)
         mux_2.input1(old_physical_address);
         mux_2.input2(ltOutput);
         mux_2.out(physicalAddress);
-//        SC_METHOD(print_tlb_lines);   //Printing method for every Cycle
-//        sensitive << clk.pos();
-//        dont_initialize();
+        SC_METHOD(print_tlb_lines);   //Printing method for every Cycle
+        sensitive << clk.pos();
+        dont_initialize();
 
         SC_THREAD(UpdatetheSecondhalfcycle);
         sensitive << clk.neg();
@@ -134,6 +134,8 @@ SC_MODULE(TLB)
         dont_initialize();
 
     }
+
+
     void UpdatetheFirsthalfcycle()
     {
         while(true) {
@@ -141,7 +143,7 @@ SC_MODULE(TLB)
 
             //VATBIndexBits are mux/demux  choose
             VAoffsetBits.write(virtualAddress.read().range(GC::number_of_offsetBits - 1,0).to_uint()); // extracts the VA offsetbits
-            VATlbIndexBits.write(virtualAddress.read().range(GC::number_of_offsetBits + GC::number_of_tlb_indexBits - 1,GC::number_of_offsetBits)); // extracts the VA tlb_index_bits
+            VATlbIndexBits.write((GC::number_of_tlb_indexBits == 0) ? sc_bv<32>("0") : virtualAddress.read().range(GC::number_of_offsetBits + GC::number_of_tlb_indexBits - 1, GC::number_of_offsetBits)); // extracts the VA tlb_index_bits
             VATagBits.write(virtualAddress.read().range(31, GC::number_of_offsetBits +GC::number_of_tlb_indexBits)); // extracts the VA tagBits
             wait(SC_ZERO_TIME); //this is very important all the written signals are written to sc signals and they need time to update the values
 
@@ -158,7 +160,12 @@ SC_MODULE(TLB)
             demux.choose_written_event.notify();
             wait(SC_ZERO_TIME);
 
+
+            //Some Printing Messages
+            std::cout << "Virtual address is : " << virtualAddress.read() << std::endl; //virtual address
             std::cout<< "physical address is : " << ltOutput << std::endl; //lookup table ready
+            std::cout << "VATlbIndexBits is : " << VATlbIndexBits.read().to_int() << std::endl; //mux/demux choose signal
+
 
 
             for (int i = 0; i < GC::tlb_line_length; i++) {
@@ -204,15 +211,13 @@ SC_MODULE(TLB)
             valid_bit.write(mux_output[0].read());
 
 
-            //writing the comparator(fallende flanke) input OldVATagBits
+            //writing the comparator input OldVATagBits
             int index = 0;
             for (int i = 0; i < GC::number_of_tagBits; i++) {
                 oldVATagBits_temp[GC::number_of_tagBits - 1-i ] = mux_output[i+1];
             }
 
             oldVATagBits.write(oldVATagBits_temp);
-
-
             wait(SC_ZERO_TIME); //for comparator and and gate
 
 
@@ -225,8 +230,17 @@ SC_MODULE(TLB)
             old_physical_address.write(old_physical_address_temp);
             wait(SC_ZERO_TIME); //wait for comparator
 
+            comp_output_advanced.write(comp_output.read() && valid_bit.read());  //writing the the choose signal of mux2 and it's the not gate input
 
-            if (comp_output && valid_bit)     // HITS AND MISSES COUNTER HERE
+            wait(SC_ZERO_TIME);// two wait to make sure the signal propagates in the second mux input and the NOT gate
+            wait(SC_ZERO_TIME);
+
+            demux.choose_written_event.notify(); //update the values in the demux after the input is ready
+
+
+            wait(SC_ZERO_TIME); //signals propagation after demux work
+
+            if (comp_output_advanced)     // HITS AND MISSES COUNTER HERE
             {
 
 
@@ -245,7 +259,7 @@ SC_MODULE(TLB)
                 }
             }
 
-            wait(SC_ZERO_TIME);
+            wait(SC_ZERO_TIME); //making sure the signals are updated so that the dfliplops can get updated values
 
 
             wait();
@@ -255,46 +269,25 @@ SC_MODULE(TLB)
 
 
 
-//    void print_tlb_lines()
-//    {
-//        std::cout << "IN SIMULATION TIME :"<< sc_time_stamp() << std::endl;
-//
-//        std::cout << std::endl;std::cout << std::endl;
-//
-//        std::cout << std::endl;
-//        std::cout << "TLB Lines Content:" << std::endl;
-//        for (unsigned i = 0; i < GC::tlbSize; i++)
-//        {
-//            std::cout << "TLB Line " << i << ": ";
-//            for (unsigned j = 0; j < GC::tlb_line_length; j++)
-//            {
-//                std::cout << tlb_lines_output[i][j].read() << " ";
-//            }
-//            std::cout << std::endl;
-//        }
-//
-//        std::cout << "Virtual address is  " << virtualAddress << "  in simulaiton time  :" << sc_time_stamp()<< std::endl;
-//
-//        std::cout << "choose signal " << VATlbIndexBits << " in simulaiton time  :" << sc_time_stamp() << std::endl;
-//
-//        std::cout << "Comparator is getting :  old VA tag " << oldVATagBits  <<  " and NEW tag " << VATagBits <<std::endl;
-//        std::cout << "MUX_2 choose " << (comp_output && valid_bit) << std::endl;
-//        std::cout << "VALID BIT " << valid_bit << std::endl;
-//
-//        std::cout << "Simulation time: " << sc_time_stamp() << "mux_output: ";
-//        for (int i = 0; i < mux_output.size(); ++i) {
-//            std::cout << mux_output[i].read();
-//        }
-//        std::cout << std::endl;
-//
-//        std::cout <<  " | TLB Lines Input: ";
-//        for (int i = 0; i < GC::tlb_line_length; i++)
-//        {
-//            std::cout << tlb_lines_input[i].read() << "";
-//        }
-//        std::cout << std::endl;
-//
-//    }
+    void print_tlb_lines()
+    {
+        std::cout << std::endl;std::cout << std::endl;
+
+        std::cout << "IN SIMULATION TIME :"<< sc_time_stamp() << std::endl;
+
+
+
+        std::cout << "TLB Lines Content:" << std::endl;
+        for (unsigned i = 0; i < GC::tlbSize; i++)
+        {
+            std::cout << "TLB Line " << i << ": ";
+            for (unsigned j = 0; j < GC::tlb_line_length; j++)
+            {
+                std::cout << tlb_lines_output[i][j].read() << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
 };
 
 #endif
