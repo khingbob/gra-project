@@ -51,7 +51,6 @@ SC_MODULE(MAIN_MEMORY)
                 {
                     addressout = it->first;
                     valueout = it->second;
-                    GC::current_request->data = it->second;
                 }
                 else
                 {

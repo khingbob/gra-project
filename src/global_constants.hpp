@@ -8,7 +8,6 @@ namespace GC
     extern size_t misses;
     extern size_t numRequests;
     extern size_t cycle_counter;
-    extern Request *current_request;
     extern int max_cycles;
     extern int tlb_line_length;
     extern unsigned tlbSize;
