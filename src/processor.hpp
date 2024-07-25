@@ -33,6 +33,7 @@ SC_MODULE(PROCESSOR)
     {
         for (size_t i = 0; i < GC::numRequests; i++)
         {
+            GC::current_request = &requests[i];
             addr = requests[i].addr;
             data = requests[i].data;
             we = requests[i].we;
