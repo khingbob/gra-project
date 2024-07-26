@@ -36,6 +36,9 @@ Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Grö
 | 32        | 18     | 26   | 6288   |
 | 64        | 16     | 28   | 6088   |
 
+### Hinweise zur Verwendung der .csv Dateien:
+Jede Zeile muss 2 Kommas haben. Jede Datei muss mit eine leere Zeile enden.
+
 ### Persönliche Beiträge jedes Gruppenmitglieds
 
 ### Safa El Benna :
