@@ -36,9 +36,9 @@ Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Grö
 | 32        | 18     | 26   | 6288   |
 | 64        | 16     | 28   | 6088   |
 
-### persönlichen Beitrag jedes Gruppenmitglieds
+### Persönliche Beiträge jedes Gruppenmitglieds
 
-Safa El Benna :
+### Safa El Benna :
 Ich habe die Dateien erstellt und das dflip flop Modul hinzugefügt (die Implementierung habe ich aus der Übungsaufgabe T5 übernommen)
 
 Ich habe ein Makefile hinzugefügt, das stark vom Makefile aus T8 inspiriert ist. Außerdem habe ich eine erste Version des Rahmenprogramms in der Datei main.c implementiert, die in C geschrieben ist. Zur Analyse der Eingabeoptionen habe ich getopt_long verwendet, gemäß den Anforderungen der Aufgabe. Die Analyse ist etwas vom Nutzereingaben-Tutorial inspiriert, obwohl sie nicht die gleiche Funktion verwendet. Diese Implementierung konvertiert die Eingabestrings in ihre entsprechenden Werte, behandelt Fehler und gibt entsprechende Fehlermeldungen an stderr aus.
@@ -53,7 +53,7 @@ Ich habe die erste Version der TLB-Modul fertiggestellt, das für die Integratio
 
 Ich habe die wichtigsten Signale mit der Tracefile verbunden.Und Die clean Funktionalität der Makefile angepasst, um es zu entfernen,wenn wir wollen.
 
-Bobur Khayitov :
+### Bobur Khayitov :
 
 Beitrag zur Projektarbeit
 
@@ -69,13 +69,13 @@ Ein weiterer wichtiger Aspekt meiner Arbeit war die Kontrolle des Codes. Ich ach
 
 Entwicklung von Modulen
 
-Ich war maßgeblich an der Erstellung des Tester-Moduls beteiligt, das für Unit-Tests verwendet wird. Dieses Modul wird nicht im Git-Repository verfolgt und befindet sich nur auf unseren lokalen Maschinen. Es ermöglichte uns, einzelne Module isoliert zu testen und deren Verhalten zu simulieren.
+Ich habe zwei entscheidende Konzepte entwickelt, die uns viel Zeit erspart und Bugs vermieden haben. Tester-Modul wird für Unit-Tests verwendet. Bei diesem Modul haben wir jedes Modul einzeln auf seine Ein- und Ausgänge getestet, um deren ordnungsgemäße Funktion zu überprüfen und deren Verhalten zu simulieren. Globale Konstanten(und Variablen) haben uns enorm viel Zeit und Code gespart. Sie wird in einem Header definiert und in alle notwendigen Dateien aufgenommen, die darauf zugreifen. Es handelt sich um eine einzige Quelle der Wahrheit, die das Risiko von Datenverlusten und Dateninkonsistenzen verringert. 
 
 Zusammenarbeit im Team
 
 Ich habe an der Erstellung der meisten Hauptmodule mitgewirkt, indem ich Ideen eingebracht und diese gemeinsam mit meinen Teamkollegen implementiert habe. Unsere Arbeitsweise war stark teamorientiert; wir haben die meisten Module gemeinsam entwickelt und darauf geachtet, dass alle Beteiligten in den Entwicklungsprozess einbezogen wurden.
 
-Mohsen Cheikh Rouhou :
+### Mohsen Cheikh Rouhou :
 
 Mein Beitrag zum Projekt war zu Beginn die theoretische Arbeit und das Verständnis des TLB für mich und die Gruppenmitglieder. Wir begannen mit der Recherche und dem Austausch unseres Wissens, um diese neu vorgestellte Hardwarekomponente zu verstehen und sicherzustellen, dass unsere Simulation relevant ist.
 

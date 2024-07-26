@@ -261,7 +261,6 @@ int parse_input_file(const char *filename, struct Request requests[])
     int k = 0;         // request counter
     while ((current_ptr = fgets(line, sizeof(line), file)) != NULL)
     {
-
         int comma_counter = 0;
         char *start_ptr;
         char address_temp[32];
