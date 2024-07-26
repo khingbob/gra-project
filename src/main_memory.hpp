@@ -27,16 +27,18 @@ SC_MODULE(MAIN_MEMORY)
     SC_CTOR(MAIN_MEMORY)
     {
         // At the rising edge of the clock, the address is not extracted from the tlb yet, thus memory acts on the falling edge.
-        SC_CTHREAD(behaviour, clk.neg());
+        SC_THREAD(behaviour);
+        sensitive << clk.pos();
+        dont_initialize();
     };
 
     void behaviour()
     {
         while (true)
         {
+            wait(8, SC_NS);
             const unsigned convertedAddress = address.read().to_uint();
             const unsigned convertedWriteData = write_data.read().to_uint();
-            wait();
 
             if (write_enable)
             {
@@ -49,6 +51,7 @@ SC_MODULE(MAIN_MEMORY)
                 auto it = memory.find(convertedAddress);
                 if (it != memory.end())
                 {
+                    std::cout<<"FOUND IN MEMORY"<<std::endl;
                     addressout = it->first;
                     valueout = it->second;
                 }
@@ -59,6 +62,7 @@ SC_MODULE(MAIN_MEMORY)
                 }
             }
             addressPrinter(memory); // show what happened in the console
+            wait();
         }
     }
 
