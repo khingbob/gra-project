@@ -116,9 +116,9 @@ SC_MODULE(TLB)
         mux_2.input1(old_physical_address);
         mux_2.input2(ltOutput);
         mux_2.out(physicalAddress);
-        SC_METHOD(print_tlb_lines); // Printing method for every Cycle
-        sensitive << clk.pos();
-        dont_initialize();
+//        SC_METHOD(print_tlb_lines); // Printing method for every Cycle
+//        sensitive << clk.pos();
+//        dont_initialize();
 
         SC_THREAD(UpdatetheSecondhalfcycle);
         sensitive << clk.neg();
@@ -249,24 +249,24 @@ SC_MODULE(TLB)
         }
     }
 
-    void print_tlb_lines()
-    {
-        std::cout << std::endl;
-        std::cout << std::endl;
-
-        std::cout << "IN SIMULATION TIME :" << sc_time_stamp() << std::endl;
-
-        std::cout << "TLB Lines Content:" << std::endl;
-        for (unsigned i = 0; i < GC::tlbSize; i++)
-        {
-            std::cout << "TLB Line " << i << ": ";
-            for (unsigned j = 0; j < GC::tlb_line_length; j++)
-            {
-                std::cout << tlb_lines_output[i][j].read() << "";
-            }
-            std::cout << std::endl;
-        }
-    }
+//    void print_tlb_lines()
+//    {
+//        std::cout << std::endl;
+//        std::cout << std::endl;
+//
+//        std::cout << "IN SIMULATION TIME :" << sc_time_stamp() << std::endl;
+//
+//        std::cout << "TLB Lines Content:" << std::endl;
+//        for (unsigned i = 0; i < GC::tlbSize; i++)
+//        {
+//            std::cout << "TLB Line " << i << ": ";
+//            for (unsigned j = 0; j < GC::tlb_line_length; j++)
+//            {
+//                std::cout << tlb_lines_output[i][j].read() << "";
+//            }
+//            std::cout << std::endl;
+//        }
+//    }
 };
 
 #endif
