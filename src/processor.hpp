@@ -38,6 +38,7 @@ SC_MODULE(PROCESSOR)
 
             if (GC::cycle_counter + GC::tlbsLatency + GC::memoryLatency >= GC::max_cycles)
             { // check if we could afford a TLB access and a memory access to read or write in the memory
+                GC::cycle_counter = SIZE_MAX;
                 sc_stop();
             }
             else

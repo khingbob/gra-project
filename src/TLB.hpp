@@ -235,6 +235,7 @@ SC_MODULE(TLB)
 
                 if (GC::cycle_counter + GC::memoryLatency >= GC::max_cycles)
                 { // check if we could afford a the misspenalty
+                    GC::cycle_counter = SIZE_MAX;
                     sc_stop();
                 }
                 else
