@@ -15,7 +15,6 @@ struct Request
 };
 
 // Result is the output of the simulation
-// it should be defined either in the simulation.cpp or here but now it is in both
 struct Result
 {
     size_t cycles;
@@ -35,7 +34,6 @@ extern struct Result run_simulation(
     struct Request requests[],
     const char *tracefile);
 
-// usage_message can be changed to a more suitable message
 const char *usage_message =
     "Usage: %s [options] -c --cycles   Die Anzahl der Zyklen, die simuliert werden sollen.\n"
     "   or: %s [options] --blocksize   Simuliert die Größe eines Speicherblocks in Byte.\n"
@@ -54,13 +52,9 @@ void print_usage(const char *program_name)
 
 void print_help(const char *program_name)
 {
-    // print_usage(program_name);
     fprintf(stderr, "Help message : you have to at least provide a csv file that contains the requests you want to use in the simulation\n");
-    fprintf(stderr, "\n%s", usage_message); // should be help_message
+    fprintf(stderr, "\n%s", usage_message);
 }
-// should create a help_message but for now i will use the usage_message for help_message
-// should decide if we even need both usage_message and help_message or just one of them
-// for now i got inspired from the Nutzereingaben-Tutorial
 
 int convert_unsigned(char *str, unsigned *value, char *value_name)
 {
@@ -74,7 +68,7 @@ int convert_unsigned(char *str, unsigned *value, char *value_name)
         return EXIT_FAILURE;
     }
     else if (errno == ERANGE)
-    { // == ERANGE ?
+    {
         fprintf(stderr, "Invalid number: %s over- or underflows unsigned long.\n", value_name);
         return EXIT_FAILURE;
     }
@@ -90,7 +84,7 @@ int convert_unsigned(char *str, unsigned *value, char *value_name)
         return EXIT_FAILURE;
     }
 
-    *value = (unsigned)temp; // make sure that this casting does not cause any problems
+    *value = (unsigned)temp;
     return EXIT_SUCCESS;
 }
 
@@ -103,11 +97,10 @@ int convert_int(char *str, int *value)
     if (endptr == str || *endptr != '\0')
     {
         fprintf(stderr, "Invalid number: cycles contains non numeric values or is empty.\n");
-        // for now only for cycles but can be adjusted if needed
         return EXIT_FAILURE;
     }
     else if (errno == ERANGE)
-    { // ?
+    {
         fprintf(stderr, "Invalid number: cycles over- or underflows long.\n");
         return EXIT_FAILURE;
     }
@@ -118,12 +111,12 @@ int convert_int(char *str, int *value)
         return EXIT_FAILURE;
     }
 
-    *value = (int)temp; // make sure that this casting does not cause any problems
+    *value = (int)temp;
     return EXIT_SUCCESS;
 }
 int isPowerOfTwo(unsigned int n)
 {
-    if (n == 0) // find out why it causes an error when n == 2
+    if (n == 0)
         return EXIT_FAILURE;
 
     while (n != 1)
@@ -168,7 +161,6 @@ int parse_uint32(const char *str, uint32_t *value, char *write_or_read)
         return EXIT_FAILURE;
     }
 
-    //*value = (uint32_t)temp; // temp is an unsigned long and this causes a problem by casting it to uint32_t find a diffrent way
     return EXIT_SUCCESS;
 }
 
@@ -189,7 +181,6 @@ int convert_tracefile_name(char *filename, const char **value, char *value_name)
     *value = filename;
     return EXIT_SUCCESS;
 }
-// maybe convert_tracefile_name  and get_input_file_name can be combined
 
 int set_input_file_name(char *filename, const char **value)
 {
@@ -424,9 +415,9 @@ int main(int argc, char *argv[])
                 {
                     return EXIT_FAILURE;
                 }
-                else if (tlbSize <= 1) // tlb length should be more than 1
+                else if (tlbSize < 1) // tlb length should be more than 1
                 {
-                    fprintf(stderr, "Invalid tlb-size:  %u Tlb has to have length of at least two.\n", tlbSize);
+                    fprintf(stderr, "Invalid tlb-size: Tlb has to have length of at least one.\n");
                     return EXIT_FAILURE;
                 }
                 else if (tlbSize >= UINT_MAX)
@@ -479,6 +470,11 @@ int main(int argc, char *argv[])
             print_usage(program_name);
             return EXIT_FAILURE;
         }
+    }
+    if (blocksize <= 1)
+    {
+        fprintf(stderr, "Invalid blocksize: blocksize has to be at least two.\n");
+        return EXIT_FAILURE;
     }
 
     if (cycles < tlbsLatency)
