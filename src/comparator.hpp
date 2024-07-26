@@ -12,8 +12,7 @@ using namespace sc_core;
 // The comparator checks if the requested VA is the same as the extracted VA by comparing their tags.
 SC_MODULE(COMPARATOR)
 {
-    sc_in<sc_bv<32>> tagBits_from_newVA; // tag should be less than 32 here either we change them to a vector or when binding in tlb we
-    // have to create a 32 bit sc_bv that conatins the tag (even if the tag is smaller the comapration as a 32 bit number is okay here)
+    sc_in<sc_bv<32>> tagBits_from_newVA;
     sc_in<sc_bv<32>> tagBits_from_oldVA;
     sc_out<bool> out;
 
