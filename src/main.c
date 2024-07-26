@@ -301,22 +301,32 @@ int parse_input_file(const char *filename, struct Request requests[])
                 start_ptr = current_ptr + i + 1; // pointer to the start of the data
                 comma_counter++;
             }
-            else if (current_ptr[i] == '\n' && comma_counter == 2)
-            {
-                if (parse_uint32(start_ptr, &requests[k].data, &write_or_read) != 0)
-                {
-                    fclose(file);
-                    return EXIT_FAILURE;
-                }
 
-                // check if the data is 0 for a read request
-                if (write_or_read == 'R' && requests[k].data != 0)
+            else if (current_ptr[i] == '\n')
+            {
+                if (comma_counter == 2)
+                {
+                    if (parse_uint32(start_ptr, &requests[k].data, &write_or_read) != 0)
+                    {
+                        fclose(file);
+                        return EXIT_FAILURE;
+                    }
+
+                    // check if the data is 0 for a read request
+                    if (write_or_read == 'R' && requests[k].data != 0)
+                    {
+                        fprintf(stderr, "Invalid input file: %s\n", filename);
+                        fclose(file);
+                        return EXIT_FAILURE;
+                    }
+                    break;
+                }
+                else
                 {
                     fprintf(stderr, "Invalid input file: %s\n", filename);
                     fclose(file);
                     return EXIT_FAILURE;
                 }
-                break;
             }
         }
 
