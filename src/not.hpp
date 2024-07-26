@@ -15,7 +15,7 @@ SC_MODULE(NOT_GATE)
     }
     void to_do()
     {
-        std::cout << "NOT GATE ACTIVATED IN" << sc_time_stamp() <<"WITH INPUT " << input.read() << std::endl;
+
         output = (!input.read());
 
     }
