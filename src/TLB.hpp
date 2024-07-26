@@ -152,9 +152,9 @@ SC_MODULE(TLB)
             wait(SC_ZERO_TIME);
 
             // Some Printing Messages
-            std::cout << "Virtual address is : " << virtualAddress.read() << std::endl;         // virtual address
-            std::cout << "physical address is :" << ltOutput << std::endl;                      // lookup table ready
-            std::cout << "VATlbIndexBits is : " << VATlbIndexBits.read().to_int() << std::endl; // mux/demux choose signal
+//            std::cout << "Virtual address is : " << virtualAddress.read() << std::endl;         // virtual address
+//            std::cout << "physical address is :" << ltOutput << std::endl;                      // lookup table ready
+//            std::cout << "VATlbIndexBits is : " << VATlbIndexBits.read().to_int() << std::endl; // mux/demux choose signal
 
             for (int i = 0; i < GC::tlb_line_length; i++)
             {

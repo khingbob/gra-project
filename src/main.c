@@ -352,7 +352,7 @@ int main(int argc, char *argv[])
     // here the default values
 
     int cycles = 1000000000;
-    unsigned tlbSize = 1;
+    unsigned tlbSize = 8;
     unsigned tlbsLatency = 2;
     unsigned blocksize = 32;
     unsigned v2bBlockOffset = 5;

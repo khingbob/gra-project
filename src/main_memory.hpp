@@ -61,20 +61,20 @@ SC_MODULE(MAIN_MEMORY)
                     valueout = 0;
                 }
             }
-            addressPrinter(memory); // show what happened in the console
+//            addressPrinter(memory); // show what happened in the console
             wait();
         }
     }
 
-    void addressPrinter(std::map<unsigned, unsigned> memory)
-    {
-        std::cout << "-----------------------------" << std::endl;
-        for (auto i : memory)
-        {
-            std::cout << "||" << i.first << "|" << i.second << "||" << std::endl;
-        }
-        std::cout << "-----------------------------" << std::endl;
-    }
+//    void addressPrinter(std::map<unsigned, unsigned> memory)
+//    {
+//        std::cout << "-----------------------------" << std::endl;
+//        for (auto i : memory)
+//        {
+//            std::cout << "||" << i.first << "|" << i.second << "||" << std::endl;
+//        }
+//        std::cout << "-----------------------------" << std::endl;
+//    }
 };
 
 #endif

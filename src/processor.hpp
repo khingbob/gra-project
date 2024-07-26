@@ -32,7 +32,7 @@ SC_MODULE(PROCESSOR)
             data = requests[i].data;
             we = requests[i].we;
 
-            std::cout << "\nRequest #" << i << ": " << (requests[i].we == 1 ? "W" : "R") << " " << requests[i].addr << " " << requests[i].data << std::endl;
+//            std::cout << "\nRequest #" << i << ": " << (requests[i].we == 1 ? "W" : "R") << " " << requests[i].addr << " " << requests[i].data << std::endl;
 
             // COUNTERS UPDATE
 
