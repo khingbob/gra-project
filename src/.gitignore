@@ -1,9 +1,0 @@
-systemc
-*.o
-*.json
-.env
-.DS_Store
-run
-.vscode/
-.idea/
-tester.cpp
