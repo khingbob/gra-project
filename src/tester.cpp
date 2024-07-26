@@ -3,7 +3,7 @@
 #include "global_constants.hpp"
 using namespace sc_core;
 
-#include "and.hpp"
+
 
 int sc_main(int argc, char *argv[])
 {

@@ -10,7 +10,6 @@
 #include "final_mux.hpp"
 #include "global_constants.hpp"
 #include <systemc.h>
-#include "and.hpp"
 #include "not.hpp"
 using namespace sc_core;
 
