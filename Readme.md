@@ -27,13 +27,13 @@ Unsere Formel: (131 + 2 * log2(TLB*SIZE) + 70 \* TLB_SIZE + 4 \* TLB_LINE_LENGTH
 
 ## Ergebnisse
 
-Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Größe in einer Summe :
+Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Größe in einer Summe über eine einfach verketete Liste:
 
 | TLB-Größe | Misses | Hits | Cycles |
 | --------- | ------ | ---- | ------ |
-| 8         |   16   |  12  |  496   |
-| 16        |    8   |  24  |  464   |
-| 32        |    8   |  24  |  464   |
+| 8         | 16     | 12   | 496    |
+| 16        | 8      | 24   | 464    |
+| 32        | 8      | 24   | 464    |
 
 ### persönlichen Beitrag jedes Gruppenmitglieds
 
@@ -75,7 +75,6 @@ Zusammenarbeit im Team
 Ich habe an der Erstellung der meisten Hauptmodule mitgewirkt, indem ich Ideen eingebracht und diese gemeinsam mit meinen Teamkollegen implementiert habe. Unsere Arbeitsweise war stark teamorientiert; wir haben die meisten Module gemeinsam entwickelt und darauf geachtet, dass alle Beteiligten in den Entwicklungsprozess einbezogen wurden.
 
 Mohsen Cheikh Rouhou :
-
 
 Mein Beitrag zum Projekt war zu Beginn die theoretische Arbeit und das Verständnis des TLB für mich und die Gruppenmitglieder. Wir begannen mit der Recherche und dem Austausch unseres Wissens, um diese neu vorgestellte Hardwarekomponente zu verstehen und sicherzustellen, dass unsere Simulation relevant ist.
 
