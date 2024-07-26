@@ -362,11 +362,11 @@ int main(int argc, char *argv[])
     // here the default values
 
     int cycles = 1000000000;
-    unsigned tlbSize = 32;
-    unsigned tlbsLatency = 10;
+    unsigned tlbSize = 64;
+    unsigned tlbsLatency = 2;
     unsigned blocksize = 32;
     unsigned v2bBlockOffset = 5;
-    unsigned memoryLatency = 30;
+    unsigned memoryLatency = 100;
     size_t numRequests = 0;
     const char *tracefile = NULL; // by default no tracefile
     const char *input_file_name;

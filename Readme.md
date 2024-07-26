@@ -27,13 +27,14 @@ Unsere Formel: (131 + 2 * log2(TLB*SIZE) + 70 \* TLB_SIZE + 4 \* TLB_LINE_LENGTH
 
 ## Ergebnisse
 
-Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Größe in einer Summe über eine einfach verketete Liste:
+Die folgende Tabelle zeigt die Hits und Misses in Abhängigkeit von der TLB-Größe in einer Summe über eine einfach verketete Liste für eine blocksize von 32:
 
 | TLB-Größe | Misses | Hits | Cycles |
 | --------- | ------ | ---- | ------ |
-| 8         | 16     | 12   | 496    |
-| 16        | 8      | 24   | 464    |
-| 32        | 8      | 24   | 464    |
+| 8         | 30     | 14   | 7488   |
+| 16        | 24     | 20   | 6888   |
+| 32        | 18     | 26   | 6288   |
+| 64        | 16     | 28   | 6088   |
 
 ### persönlichen Beitrag jedes Gruppenmitglieds
 
