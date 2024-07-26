@@ -103,8 +103,6 @@ SC_MODULE(TLB)
             }
         }
 
-
-
         not_gate.input(comp_output_advanced);
         not_gate.output(demux_input);
 
@@ -119,7 +117,7 @@ SC_MODULE(TLB)
         mux_2.input1(old_physical_address);
         mux_2.input2(ltOutput);
         mux_2.out(physicalAddress);
-        SC_METHOD(print_tlb_lines);   //Printing method for every Cycle
+        SC_METHOD(print_tlb_lines); // Printing method for every Cycle
         sensitive << clk.pos();
         dont_initialize();
 
@@ -128,152 +126,135 @@ SC_MODULE(TLB)
         dont_initialize();
 
         SC_THREAD(UpdatetheFirsthalfcycle);
-        sensitive << clk.pos() ;
+        sensitive << clk.pos();
         dont_initialize();
-
     }
-
 
     void UpdatetheFirsthalfcycle()
     {
-        while(true) {
+        while (true)
+        {
             wait(SC_ZERO_TIME);
 
-            //VATBIndexBits are mux/demux  choose
-            VAoffsetBits.write(virtualAddress.read().range(GC::number_of_offsetBits - 1,0).to_uint()); // extracts the VA offsetbits
+            // VATBIndexBits are mux/demux  choose
+            VAoffsetBits.write(virtualAddress.read().range(GC::number_of_offsetBits - 1, 0).to_uint());                                                                                                    // extracts the VA offsetbits
             VATlbIndexBits.write((GC::number_of_tlb_indexBits == 0) ? sc_bv<32>("0") : virtualAddress.read().range(GC::number_of_offsetBits + GC::number_of_tlb_indexBits - 1, GC::number_of_offsetBits)); // extracts the VA tlb_index_bits
-            VATagBits.write(virtualAddress.read().range(31, GC::number_of_offsetBits +GC::number_of_tlb_indexBits)); // extracts the VA tagBits
-            wait(SC_ZERO_TIME); //this is very important all the written signals are written to sc signals and they need time to update the values
+            VATagBits.write(virtualAddress.read().range(31, GC::number_of_offsetBits + GC::number_of_tlb_indexBits));                                                                                      // extracts the VA tagBits
+            wait(SC_ZERO_TIME);                                                                                                                                                                            // this is very important all the written signals are written to sc signals and they need time to update the values
 
-
-
-            //lookuptable start
+            // lookuptable start
             lt.choose_written_event.notify();
 
-
-            //multiplexer start
+            // multiplexer start
             mux.choose_written_event.notify();
 
-            //demultiplexer start
+            // demultiplexer start
             demux.choose_written_event.notify();
             wait(SC_ZERO_TIME);
 
+            // Some Printing Messages
+            std::cout << "Virtual address is : " << virtualAddress.read() << std::endl;         // virtual address
+            std::cout << "physical address is :" << ltOutput << std::endl;                      // lookup table ready
+            std::cout << "VATlbIndexBits is : " << VATlbIndexBits.read().to_int() << std::endl; // mux/demux choose signal
 
-            //Some Printing Messages
-            std::cout << "Virtual address is : " << virtualAddress.read() << std::endl; //virtual address
-            std::cout<< "physical address is : " << ltOutput << std::endl; //lookup table ready
-            std::cout << "VATlbIndexBits is : " << VATlbIndexBits.read().to_int() << std::endl; //mux/demux choose signal
-
-
-
-            for (int i = 0; i < GC::tlb_line_length; i++) {
+            for (int i = 0; i < GC::tlb_line_length; i++)
+            {
                 mux_output_temp[i] = mux_output[i];
             }
 
             wait();
         }
-
     }
-
-
 
     void UpdatetheSecondhalfcycle()
     {
         while (true)
         {
 
-            //read from lookuptable output
-            // Extract the physical number from ltOutput
+            // read from lookuptable output
+            //  Extract the physical number from ltOutput
             sc_bv<32> physicalNumber = ltOutput.read().range(31, GC::number_of_offsetBits);
 
             // Write the physical number to the leftmost bits of tlb_lines_input_temp
             tlb_lines_input_temp.range(GC::number_of_tagBits + GC::number_of_tlb_indexBits - 1, 0) = physicalNumber.range(GC::number_of_tagBits + GC::number_of_tlb_indexBits - 1, 0);
 
             // Write the tag bits after the physical number
-            tlb_lines_input_temp.range(GC::number_of_tlb_indexBits + 2 * GC::number_of_tagBits - 1, GC::number_of_tlb_indexBits + GC::number_of_tagBits) = VATagBits.read().range(31-(GC::number_of_offsetBits + GC::number_of_tlb_indexBits) , 0 );
+            tlb_lines_input_temp.range(GC::number_of_tlb_indexBits + 2 * GC::number_of_tagBits - 1, GC::number_of_tlb_indexBits + GC::number_of_tagBits) = VATagBits.read().range(31 - (GC::number_of_offsetBits + GC::number_of_tlb_indexBits), 0);
 
             // Write the valid bit to the leftmost bit after the tag bits
             tlb_lines_input_temp.range(2 * GC::number_of_tagBits + GC::number_of_tlb_indexBits, 2 * GC::number_of_tagBits + GC::number_of_tlb_indexBits) = 1;
 
             wait(SC_ZERO_TIME);
 
-
-            //the bits are in reverse order so we need to reverse them
+            // the bits are in reverse order so we need to reverse them
             for (int i = 0; i < GC::tlb_line_length; i++)
             {
                 tlb_lines_input[GC::tlb_line_length - 1 - i] = tlb_lines_input_temp.get_bit(i);
             }
 
-            wait(SC_ZERO_TIME);//for lookuptable
+            wait(SC_ZERO_TIME); // for lookuptable
 
             valid_bit.write(mux_output[0].read());
 
-
-            //writing the comparator input OldVATagBits
+            // writing the comparator input OldVATagBits
             int index = 0;
-            for (int i = 0; i < GC::number_of_tagBits; i++) {
-                oldVATagBits_temp[GC::number_of_tagBits - 1-i ] = mux_output[i+1];
+            for (int i = 0; i < GC::number_of_tagBits; i++)
+            {
+                oldVATagBits_temp[GC::number_of_tagBits - 1 - i] = mux_output[i + 1];
             }
 
             oldVATagBits.write(oldVATagBits_temp);
-            wait(SC_ZERO_TIME); //for comparator and and gate
-
+            wait(SC_ZERO_TIME); // for comparator and and gate
 
             mux_2.choose_written_event.notify();
 
-            //writing the last mux input
+            // writing the last mux input
             sc_bv<32> old_physical_address_temp;
             old_physical_address_temp.range(GC::number_of_offsetBits - 1, 0) = VAoffsetBits;
             old_physical_address_temp.range(31, GC::number_of_offsetBits) = mux_output_temp.range(31 - GC::number_of_offsetBits, 0);
             old_physical_address.write(old_physical_address_temp);
-            wait(SC_ZERO_TIME); //wait for comparator
+            wait(SC_ZERO_TIME); // wait for comparator
 
-            comp_output_advanced.write(comp_output.read() && valid_bit.read());  //writing the the choose signal of mux2 and it's the not gate input
+            comp_output_advanced.write(comp_output.read() && valid_bit.read()); // writing the the choose signal of mux2 and it's the not gate input
 
-            wait(SC_ZERO_TIME);// two wait to make sure the signal propagates in the second mux input and the NOT gate
+            wait(SC_ZERO_TIME); // two wait to make sure the signal propagates in the second mux input and the NOT gate
             wait(SC_ZERO_TIME);
 
-            demux.choose_written_event.notify(); //update the values in the demux after the input is ready
+            demux.choose_written_event.notify(); // update the values in the demux after the input is ready
 
+            wait(SC_ZERO_TIME); // signals propagation after demux work
 
-            wait(SC_ZERO_TIME); //signals propagation after demux work
-
-            if (comp_output_advanced)     // HITS AND MISSES COUNTER HERE
+            if (comp_output_advanced) // HITS AND MISSES COUNTER HERE
             {
 
-
-                GC::hits= GC::hits + 1;
-
+                GC::hits = GC::hits + 1;
             }
             else
             {
-                GC::misses= GC::misses + 1;
+                GC::misses = GC::misses + 1;
 
-                if(GC::cycle_counter + GC:: memoryLatency >= GC::max_cycles){    //check if we could afford a the misspenalty
+                if (GC::cycle_counter + GC::memoryLatency >= GC::max_cycles)
+                { // check if we could afford a the misspenalty
                     sc_stop();
                 }
-                else {
-                    GC::cycle_counter = GC::cycle_counter + GC::memoryLatency;   //add tlb latency and memory latency to the cycle counter
+                else
+                {
+                    GC::cycle_counter = GC::cycle_counter + GC::memoryLatency; // add tlb latency and memory latency to the cycle counter
                 }
             }
 
-            wait(SC_ZERO_TIME); //making sure the signals are updated so that the dfliplops can get updated values
-
+            wait(SC_ZERO_TIME); // making sure the signals are updated so that the dfliplops can get updated values
 
             wait();
         }
     }
 
-
-
-
     void print_tlb_lines()
     {
-        std::cout << std::endl;std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << std::endl;
 
-        std::cout << "IN SIMULATION TIME :"<< sc_time_stamp() << std::endl;
-
-
+        std::cout << "IN SIMULATION TIME :" << sc_time_stamp() << std::endl;
 
         std::cout << "TLB Lines Content:" << std::endl;
         for (unsigned i = 0; i < GC::tlbSize; i++)
@@ -281,7 +262,7 @@ SC_MODULE(TLB)
             std::cout << "TLB Line " << i << ": ";
             for (unsigned j = 0; j < GC::tlb_line_length; j++)
             {
-                std::cout << tlb_lines_output[i][j].read() << " ";
+                std::cout << tlb_lines_output[i][j].read() << "";
             }
             std::cout << std::endl;
         }

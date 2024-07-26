@@ -16,14 +16,15 @@ namespace GC
     unsigned blocksize;
     unsigned v2bBlockOffset;
     unsigned memoryLatency;
-    size_t numRequests;
     unsigned number_of_offsetBits;
     unsigned number_of_tlb_indexBits;
     unsigned number_of_tagBits;
     int tlb_line_length;
+    size_t numRequests;
     size_t cycle_counter = 0;
     size_t hits = 0;
     size_t misses = 0;
+    Request *current_request = NULL;
 }
 
 struct Result

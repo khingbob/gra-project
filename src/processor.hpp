@@ -3,12 +3,7 @@
 #include <systemc>
 using namespace sc_core;
 
-struct Request
-{
-    uint32_t addr;
-    uint32_t data;
-    int we;
-};
+#include "global_constants.hpp"
 
 // Processor module that sends requests every clock cycle
 SC_MODULE(PROCESSOR)
@@ -28,16 +23,16 @@ SC_MODULE(PROCESSOR)
         SC_CTHREAD(behaviour, clk.pos());
     }
 
-    // Remove this comment
     void behaviour()
     {
         for (size_t i = 0; i < GC::numRequests; i++)
         {
+            GC::current_request = &requests[i];
             addr = requests[i].addr;
             data = requests[i].data;
             we = requests[i].we;
 
-            std::cout << "\nRequest #" << i << ": " << (requests[i].we == 1 ? "W" : "R") << " " << requests[i].addr << requests[i].data << std::endl;
+            std::cout << "\nRequest #" << i << ": " << (requests[i].we == 1 ? "W" : "R") << " " << requests[i].addr << " " << requests[i].data << std::endl;
 
             // COUNTERS UPDATE
 

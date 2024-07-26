@@ -1,6 +1,13 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+struct Request
+{
+    uint32_t addr;
+    uint32_t data;
+    int we;
+};
+
 // Global Constants used in the project.
 namespace GC
 {
@@ -8,6 +15,7 @@ namespace GC
     extern size_t misses;
     extern size_t numRequests;
     extern size_t cycle_counter;
+    extern Request *current_request;
     extern int max_cycles;
     extern int tlb_line_length;
     extern unsigned tlbSize;

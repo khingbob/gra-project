@@ -51,9 +51,9 @@ SC_MODULE(MAIN_MEMORY)
                 auto it = memory.find(convertedAddress);
                 if (it != memory.end())
                 {
-                    std::cout<<"FOUND IN MEMORY"<<std::endl;
                     addressout = it->first;
                     valueout = it->second;
+                    GC::current_request->data = it->second;
                 }
                 else
                 {
