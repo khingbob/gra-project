@@ -89,4 +89,6 @@ Zusätzlich hatte ich einen Teil bei der Erstellung der Makefile, um den Build-P
 
 Ich habe auch die Präsentationsfolien erstellt, da es einfacher ist, die Implementierung mit dem Logisim-Evolution-Design zu erklären.
 
-Während der gesamten Implementierungsphase haben wir versucht, unsere Module immer wieder zu testen, eine Testeinheit zu verwenden, zu debuggen und aussagekräftige Kommentare für den Autor zu schreiben.
+Während der Implementierungsphase nutzte ich den GDC-Debugger von C++ für die Fehlerbehebung und das Testen der Module. Dies half uns, Fehler schnell zu identifizieren und zu beheben. Ich versuchte, eine Datenbank mit realen CPU-Traces für eine 32-Bit-Architektur zu finden, um Benchmark-Tests durchzuführen und die Latenzen in realen Szenarien zu analysieren.
+
+Leider war es schwierig, solch alte und spezifische Daten zu finden, da sie meist kostenpflichtig sind. Zusätzlich verglich ich die Ergebnisse unserer TLB-Simulation mit vorhandenen Forschungsergebnissen, um die Übereinstimmung der Verhaltensmuster zu überprüfen.
